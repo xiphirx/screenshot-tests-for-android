@@ -12,6 +12,7 @@ package com.facebook.testing.screenshot.internal;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.app.UiAutomation;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -234,10 +235,11 @@ public class ScreenshotImpl {
    */
   private static ScreenshotImpl create(
       Context context,
+      UiAutomation automation,
       Bundle args,
       HostFileSender hostFileSender) {
     String mode = args.getString("screenshot_mode");
-    Album album = AlbumImpl.createStreaming(context, "default", hostFileSender);
+    Album album = AlbumImpl.createStreaming(context, automation, "default", hostFileSender);
     album.cleanup();
     return new ScreenshotImpl(album, new ViewHierarchy());
   }
@@ -349,6 +351,7 @@ public class ScreenshotImpl {
 
       sInstance = create(
         instrumentation.getContext(),
+        (Build.VERSION.SDK_INT >= 18) ? instrumentation.getUiAutomation() : null,
         arguments,
         hostFileSender);
 

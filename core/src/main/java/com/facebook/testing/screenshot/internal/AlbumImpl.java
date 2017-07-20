@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import android.app.UiAutomation;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -295,8 +296,8 @@ public class AlbumImpl implements Album {
    * Creates a "local" album that stores all the images on the local
    * disk.
    */
-  public static AlbumImpl createLocal(Context context, String name) {
-    return new AlbumImpl(new ScreenshotDirectories(context), name, null);
+  public static AlbumImpl createLocal(Context context, UiAutomation automation, String name) {
+    return new AlbumImpl(new ScreenshotDirectories(context, automation), name, null);
   }
 
   /**
@@ -305,8 +306,9 @@ public class AlbumImpl implements Album {
    */
   public static AlbumImpl createStreaming(
       Context context,
+      UiAutomation automation,
       String name,
       HostFileSender hostFileSender) {
-    return new AlbumImpl(new ScreenshotDirectories(context), name, hostFileSender);
+    return new AlbumImpl(new ScreenshotDirectories(context, automation), name, hostFileSender);
   }
 }
